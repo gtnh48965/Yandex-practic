@@ -12,7 +12,12 @@ function App() {
     useEffect(() => {
         if (firstRenderRef.current) {
             fetch(url)
-                .then(response => response.json())
+                .then(response => {
+                    if (response.ok) {
+                        return response.json()
+                    }
+                    return Promise.reject(response.status);
+                })
                 .then(response => {
                     setData(response.data)
                 })

@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import "./Ingredient.css"
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import ModalOverlay from "../../Modal/ModalOverlay";
+import IngredientDetails from "./IngredientDetails";
+import Modal from "../../Modal/Modal";
 
 const Ingredient = ({item}) => {
     const [open, setOpen] = useState(false)
@@ -27,7 +28,8 @@ const Ingredient = ({item}) => {
                 </div>
                 <p className='card_ingredient__name text text_type_main-default'>{item.name}</p>
             </div>
-            {open&& <ModalOverlay children={item} handleClickClose={handleClickClose}  header={'Детали ингредиента'}/>}
+            {open&& <Modal children={<IngredientDetails item={item}/>} handleClickClose={handleClickClose}  header={'Детали ингредиента'}/>}
+
         </>
 
     );

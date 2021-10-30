@@ -1,12 +1,7 @@
 import React, {useEffect,useCallback} from 'react';
-import ReactDOM from "react-dom";
 import './ModalOverlay.css';
-import Modal from "./Modal";
 
-const modalRoot = document.getElementById("react-modals")
-
-const ModalOverlay = (props) => {
-    const {children,handleClickClose, header} = props
+const ModalOverlay = ({handleClickClose}) => {
     const listen = useCallback((event) => {
         if (event.defaultPrevented) {
             return;
@@ -24,7 +19,7 @@ const ModalOverlay = (props) => {
             document.removeEventListener("keydown", (event)=> listen(event));
         }
     }, [listen])
-    return ReactDOM.createPortal(
+    return (
         <>
             <div onClick={
                 (event) =>
@@ -32,11 +27,8 @@ const ModalOverlay = (props) => {
                         handleClickClose()
                         :null
                 } className={'ModalOverlay'}>
-                <Modal children={children} handleClickClose={handleClickClose} header={header}  />
             </div>
         </>
-        ,
-        modalRoot
     );
 };
 
