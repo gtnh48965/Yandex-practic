@@ -3,6 +3,7 @@ import React, {useEffect} from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "./Ingredients/Ingredient";
 import {menuItemPropTypes} from "../../utils/constants";
+import PropTypes from "prop-types";
 
 const BurgerIngredients = ({data}) =>{
     const [current, setCurrent] = React.useState('bun');
@@ -10,16 +11,16 @@ const BurgerIngredients = ({data}) =>{
     useEffect(()=> {
         const el = document.getElementById(current);
         el.scrollIntoView({behavior: "smooth"});
-    },[current])
+    },[current]);
     const data_bun = data?.filter(item => {
             return item.type === 'bun'
-    })
+    });
     const data_sauce = data?.filter(item => {
         return item.type === 'sauce'
-    })
+    });
     const data_main = data?.filter(item => {
         return item.type === 'main'
-    })
+    });
 
     return (
         <section className='left-section'>
@@ -72,4 +73,6 @@ const BurgerIngredients = ({data}) =>{
 };
 export default BurgerIngredients;
 
-BurgerIngredients.propTypes = menuItemPropTypes;
+BurgerIngredients.propTypes = {
+    data: PropTypes.arrayOf(menuItemPropTypes).isRequired,
+};

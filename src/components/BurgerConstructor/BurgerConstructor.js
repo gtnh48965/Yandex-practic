@@ -6,7 +6,7 @@ import Modal from "../Modal/Modal";
 import {menuItemPropTypes} from "../../utils/constants";
 
 const BurgerConstructor = () => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
     const handleClickOpen = () => {
         setOpen(true)
     };
@@ -210,8 +210,8 @@ const BurgerConstructor = () => {
                     />
                 </div>
                 <div className='ingredients_list' style={{  gap: '16px' }} >
-                    {order_list.map((item) =>
-                        <div className='d-flex align-items-center'>
+                    {order_list.map((item,index) =>
+                        <div className='d-flex align-items-center' key={index}>
                             <span className='m-2'>
                                 <DragIcon type="primary" />
                             </span>
@@ -252,4 +252,6 @@ const BurgerConstructor = () => {
 };
 export default BurgerConstructor;
 
-BurgerConstructor.propTypes = menuItemPropTypes;
+BurgerConstructor.propTypes = {
+    index: menuItemPropTypes.isRequired,
+};

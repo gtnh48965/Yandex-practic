@@ -1,5 +1,6 @@
 import React, {useEffect,useCallback} from 'react';
 import './ModalOverlay.css';
+import {menuItemPropTypes} from "../../utils/constants";
 
 const ModalOverlay = ({handleClickClose}) => {
     const listen = useCallback((event) => {
@@ -9,7 +10,7 @@ const ModalOverlay = ({handleClickClose}) => {
         if (event.key === 'Esc' || event.key === 'Escape') {
             handleClickClose()
         }
-    },[handleClickClose])
+    },[handleClickClose]);
 
     useEffect(()=>{
         // Устанавливаем слушатель события при монтировании
@@ -18,7 +19,7 @@ const ModalOverlay = ({handleClickClose}) => {
         return () => {
             document.removeEventListener("keydown", (event)=> listen(event));
         }
-    }, [listen])
+    }, [listen]);
     return (
         <>
             <div onClick={
@@ -33,3 +34,7 @@ const ModalOverlay = ({handleClickClose}) => {
 };
 
 export default ModalOverlay;
+
+ModalOverlay.propTypes = {
+    handleClickClose:menuItemPropTypes.isRequired,
+};

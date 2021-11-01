@@ -1,4 +1,6 @@
 import React from 'react';
+import {menuItemPropTypes} from "../../../utils/constants";
+import PropTypes from "prop-types";
 
 const IngredientDetails = ({item}) => {
     return (
@@ -38,3 +40,7 @@ const IngredientDetails = ({item}) => {
 };
 
 export default IngredientDetails;
+
+IngredientDetails.propTypes = {
+    item: PropTypes.arrayOf(menuItemPropTypes).isRequired,
+};

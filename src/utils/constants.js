@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+
 export const menuItemPropTypes = PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,

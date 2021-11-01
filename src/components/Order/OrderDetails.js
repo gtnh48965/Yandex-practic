@@ -1,11 +1,12 @@
 import React from 'react';
 
+
 const OrderDetails = () => {
     const order_info = {
         number: '034536',
         img: './images/done.png',
         status: 'Ваш заказ начали готовить',
-    }
+    };
     return (
         <main className={'modal-self_main mt-3'}>
             <p className="text text_type_digits-large modal-self_main__order mb-3">{order_info.number}</p>
@@ -24,3 +25,4 @@ const OrderDetails = () => {
 };
 
 export default OrderDetails;
+
