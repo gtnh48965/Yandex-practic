@@ -1,6 +1,6 @@
 import React, {useEffect,useCallback} from 'react';
 import './ModalOverlay.css';
-import {menuItemPropTypes} from "../../utils/constants";
+import PropTypes from 'prop-types';
 
 const ModalOverlay = ({handleClickClose}) => {
     const listen = useCallback((event) => {
@@ -36,5 +36,5 @@ const ModalOverlay = ({handleClickClose}) => {
 export default ModalOverlay;
 
 ModalOverlay.propTypes = {
-    handleClickClose:menuItemPropTypes.isRequired,
+    handleClickClose:PropTypes.func.isRequired
 };

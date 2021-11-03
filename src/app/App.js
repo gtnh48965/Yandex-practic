@@ -8,7 +8,7 @@ let url = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
     const firstRenderRef = useRef(true);
-    const [data, setData] = React.useState(null)
+    const [data, setData] = React.useState([]);
     useEffect(() => {
         if (firstRenderRef.current) {
             fetch(url)
@@ -24,7 +24,7 @@ function App() {
                 .catch(err => console.log(err));
         }
         firstRenderRef.current = false;
-    })
+    });
 
     return (
         <div className="App">
@@ -33,13 +33,16 @@ function App() {
                     <div className={'row title'}>
                         <h1>Соберите бургер</h1>
                     </div>
+                    {data !==[]  &&
                     <div className='d-flex'>
-                        <BurgerIngredients data={data}/>
-                        <BurgerConstructor data={data}/>
+                            <BurgerIngredients data={data}/>
+                            <BurgerConstructor date={data}/>
                     </div>
+                    }
                 </main>
         </div>
   );
 }
 
 export default App;
+

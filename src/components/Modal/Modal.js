@@ -3,7 +3,7 @@ import './Modal.css';
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "./ModalOverlay";
 import ReactDOM from "react-dom";
-import {menuItemPropTypes} from "../../utils/constants";
+import PropTypes from 'prop-types';
 
 const modalRoot = document.getElementById("react-modals");
 
@@ -29,7 +29,7 @@ const Modal = (props) => {
 export default Modal;
 
 Modal.propTypes = {
-    children: menuItemPropTypes.isRequired,
-    header: menuItemPropTypes.isRequired,
-    handleClickClose: menuItemPropTypes.isRequired,
+    children: PropTypes.element,
+    header: PropTypes.element,
+    handleClickClose: PropTypes.element,
 };
