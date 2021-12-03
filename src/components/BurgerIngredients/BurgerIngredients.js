@@ -1,15 +1,19 @@
 import "./BurgerIngredients.css"
-import React, {useEffect} from "react";
+import React, {useEffect,useContext} from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "./Ingredients/Ingredient";
-import {menuItemPropTypes} from "../../utils/constants";
-import PropTypes from "prop-types";
+import {DataContext} from "../../Services/DataContext";
 
-const BurgerIngredients = ({data}) =>{
+const BurgerIngredients = () =>{
+    const [data] = useContext(DataContext);
+
     const [current, setCurrent] = React.useState('bun');
 
     useEffect(()=> {
         const el = document.getElementById(current);
+        el.addEventListener('scroll', ()=> {
+
+        })
         el.scrollIntoView({behavior: "smooth"});
     },[current]);
     const data_bun = data?.filter(item => {
@@ -73,6 +77,3 @@ const BurgerIngredients = ({data}) =>{
 };
 export default BurgerIngredients;
 
-BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(menuItemPropTypes).isRequired,
-};

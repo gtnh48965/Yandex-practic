@@ -1,14 +1,24 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import "./Ingredient.css"
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientDetails from "./IngredientDetails";
 import Modal from "../../Modal/Modal";
 import {menuItemPropTypes} from "../../../utils/constants";
+import {IngredientsContext} from "../../../Services/DataContext";
 
 const Ingredient = ({item}) => {
     const [open, setOpen] = useState(false);
+    const [ingredients, setIngredients] = useContext(IngredientsContext);
 
     const handleClickOpen = () => {
+        if (item.type === 'bun') {
+            if (ingredients[0]?.type === 'bun') {
+                setIngredients(ingredients.shift())
+            }
+            setIngredients([item, ...ingredients])
+        } else {
+            setIngredients([...ingredients,item])
+        }
         setOpen(true)
     };
     const handleClickClose = () => {
