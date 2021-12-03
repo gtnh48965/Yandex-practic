@@ -1,80 +1,51 @@
 import "./BurgerIngredients.css"
-import React, {useEffect} from "react";
+import React, {useEffect,useContext} from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "./Ingredients/Ingredient";
-import {useSelector} from "react-redux";
+import {DataContext} from "../../Services/DataContext";
 
-const BurgerIngredients = () => {
-
-    const data = useSelector(state => state.data)
+const BurgerIngredients = () =>{
+    const [data] = useContext(DataContext);
 
     const [current, setCurrent] = React.useState('bun');
 
-    useEffect(() => {
-        const section = document.getElementById('burger-ingredients_section')
-        let bunH = document.getElementById('bun').offsetTop-section.offsetTop;
-        let sauceH = document.getElementById('sauce').offsetTop-section.offsetTop;
-        section?.addEventListener("scroll", ()=>{
-            if (current === 'bun') {
-                if (bunH+(sauceH-bunH)/2 < section.scrollTop ) {
-                    setCurrent('sauce')
-                }
-            }
+    useEffect(()=> {
+        const el = document.getElementById(current);
+        el.addEventListener('scroll', ()=> {
+
         })
-        return section.removeEventListener("scroll", ()=>{})
-    }, [])
-    useEffect(() => {
-        const section = document.getElementById('burger-ingredients_section')
-        let bunH = document.getElementById('bun').offsetTop-section.offsetTop;
-        let sauceH = document.getElementById('sauce').offsetTop-section.offsetTop;
-        let mainH = document.getElementById('main').offsetTop-section.offsetTop;
-        section?.addEventListener("scroll", ()=>{
-            if (current === 'sauce') {
-                if (bunH+(sauceH-bunH)/2 > section.scrollTop ) {
-                    setCurrent('bun')
-                }
-                if (sauceH+(mainH-sauceH)/2 < section.scrollTop ) {
-                    setCurrent('main')
-                }
-            }
-        })
-        return section.removeEventListener("scroll", ()=>{})
-    }, [current])
+        el.scrollIntoView({behavior: "smooth"});
+    },[current]);
+    const data_bun = data?.filter(item => {
+            return item.type === 'bun'
+    });
+    const data_sauce = data?.filter(item => {
+        return item.type === 'sauce'
+    });
+    const data_main = data?.filter(item => {
+        return item.type === 'main'
+    });
+
     return (
         <section className='left-section'>
             <article className='tab'>
-                <Tab value="bun" active={current === 'bun'} onClick={
-                    () => {
-                        const el = document.getElementById('bun');
-                        el.scrollIntoView({behavior: "smooth"});
-                    }
-                }>
+                <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
                     Булки
                 </Tab>
-                <Tab value="sauce" active={current === 'sauce'} onClick={
-                    () => {
-                        const el = document.getElementById('sauce');
-                        el.scrollIntoView({behavior: "smooth"});
-                    }
-                }>
+                <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
                     Соусы
                 </Tab>
-                <Tab value="main" active={current === 'main'} onClick={
-                    () => {
-                        const el = document.getElementById('main');
-                        el.scrollIntoView({behavior: "smooth"});
-                    }
-                }>
+                <Tab value="main" active={current === 'main'} onClick={setCurrent}>
                     Начинки
                 </Tab>
             </article>
-                <article className='ingredients' id='burger-ingredients_section'>
+            <article className='ingredients'>
                 <div id={'bun'}>
                     <h3 className='title_ingredients'>Булки</h3>
                     <div className='list_ingredients'>
-                        {data.data_bun?.map((item) =>
+                        {data_bun?.map((item) =>
                             <div key={item._id}>
-                                <Ingredient item={item}/>
+                                <Ingredient item={item} />
                             </div>
                         )}
                     </div>
@@ -82,19 +53,20 @@ const BurgerIngredients = () => {
                 <div id={'sauce'}>
                     <h3 className='title_ingredients'>Соусы</h3>
                     <div className='d-flex flex-wrap'>
-                        {data.data_sauce?.map((item) =>
+                        {data_sauce?.map((item) =>
                             <div key={item._id}>
-                                <Ingredient item={item}/>
+                                <Ingredient item={item} />
                             </div>
+
                         )}
                     </div>
                 </div>
                 <div id={'main'}>
                     <h3 className='title_ingredients'>Начинки</h3>
                     <div className='d-flex flex-wrap'>
-                        {data.data_main?.map((item) =>
+                        {data_main?.map((item) =>
                             <div key={item._id}>
-                                <Ingredient item={item}/>
+                                <Ingredient item={item} />
                             </div>
                         )}
                     </div>

@@ -1,81 +1,98 @@
 import "./BurgerConstructor.css"
-import React, {useCallback, useRef, useState} from "react";
+import React, {useContext, useState} from "react";
 import {Button, ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderDetails from "../Order/OrderDetails";
 import Modal from "../Modal/Modal";
+import {IngredientsContext, OrderContext} from "../../Services/DataContext";
 import TotalPrice from "../TotalPrice/TotalPrice";
-import {
-    moveIngredients,
-    setIngredients,
-    setIngredientsBun,
-    setNewIngredients
-} from "../../services/reducers/ingredientsReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {getOrder} from "../../services/actions/getOrder";
-import {useDrop} from "react-dnd";
-import DraggableElement from "./DraggableElement";
-import update from "immutability-helper";
 
 const BurgerConstructor = () => {
-    const dispatch = useDispatch()
-    const ingredients = useSelector(state => state.ingredients);
-    const [open, setOpen] = useState(false);
-    const [{ isHover }, dropTarget] = useDrop({
-        accept: 'ingredient',
-        collect: monitor => ({
-            isHover: monitor.isOver()
-        }),
-        drop(item) {
-            item.type==='bun'?
-                dispatch(setIngredientsBun(item))
-                :
-                dispatch(setNewIngredients(item))
-        },
-    });
+    const [ingredients,setIngredients] = useContext(IngredientsContext);
+    const [,setOrder] = useContext(OrderContext);
 
+    const [open, setOpen] = useState(false);
+
+    const deleteIngredients = (index) => {
+        ingredients.splice(index,1)
+        setIngredients([...ingredients])
+    };
     const handleClickOpen = () => {
-        let data = {"ingredients": [ingredients.ingredients_bun._id, ingredients.ingredients.map(item => {return item._id})]};
-        dispatch(getOrder(data));
-        setOpen(true);
+        let url = 'https://norma.nomoreparties.space/api/orders';
+        let data = {"ingredients": ingredients.map(item => {return item._id})}
+        fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                return Promise.reject(response.status);
+            })
+            .then(response => {
+                setOrder(response);
+                setOpen(true);
+
+            })
+            .catch(err => console.log(err));
     };
     const handleClickClose = () => {
         setOpen(false)
     };
-    const moveElement = (dragIndex, hoverIndex, item) => {
-        dispatch(moveIngredients({dragIndex: dragIndex,hoverIndex: hoverIndex,dragIngredients: item }));
-    };
+
     return (
-        <section ref={dropTarget} className='right-section'>
-            <div className='d-flex flex-column' style={{  gap: '16px' }}>
-                <div className=' ml-10'>
+        <section className='right-section'>
+            <div className='d-flex flex-column align-items-end' style={{  gap: '16px' }}>
+                <div className='pr-4'>
                     <ConstructorElement
                         type="top"
                         isLocked={true}
-                        text={ingredients.ingredients_bun.name}
-                        price={ingredients.ingredients_bun.price}
-                        thumbnail={ingredients.ingredients_bun.image_mobile}
+                        text={ingredients[0]?.name}
+                        price={ingredients[0]?.price}
+                        thumbnail={ingredients[0]?.image_mobile}
                     />
                 </div>
                 <div className='ingredients_list' style={{  gap: '16px' }} >
-                    {ingredients.ingredients.map((ingredient,index) =>
-                        <DraggableElement id={ingredient.id} ingredient={ingredient} index={index} key={ingredient.id} moveElement={moveElement}/>
+                    {ingredients.map((item,index) =>
+                        <div className='d-flex align-items-center' key={index}>
+                            {index===0&&item.type==='bun'?
+                                null:
+                                <>
+                                    <span className='m-2'>
+                                        <DragIcon type="primary" />
+                                    </span>
+                                    <ConstructorElement
+                                        text={item.name}
+                                        price={item.price}
+                                        thumbnail={item.image_mobile}
+                                        handleClose={()=>deleteIngredients(index)}
+                                    />
+                                </>
+                            }
+
+                        </div>
                     )}
                 </div>
-                <div className='ml-10'>
+                {ingredients[0]?.type==='bun'?
+                <div className='pr-4'>
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
-                        text={ingredients.ingredients_bun.name}
-                        price={ingredients.ingredients_bun.price}
-                        thumbnail={ingredients.ingredients_bun.image_mobile}
+                        text={ingredients[0]?.name}
+                        price={ingredients[0]?.price}
+                        thumbnail={ingredients[0]?.image_mobile}
                     />
-                </div>
+                </div> : null}
             </div>
             <footer>
                 <div className='button'> </div>
                 <TotalPrice />
                 <div className='button'>
-                    {ingredients.ingredients_bun.type==='bun'?
+                    {ingredients[0]?.type==='bun'?
                         <Button onClick={()=> handleClickOpen()} type="primary" size="large" >
                             Оформить заказ
                         </Button>

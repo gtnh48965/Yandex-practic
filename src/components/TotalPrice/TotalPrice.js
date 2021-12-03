@@ -1,26 +1,23 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import "./TotalPrice.css"
-import {useDispatch, useSelector} from "react-redux";
-import {setPrice} from "../../services/reducers/priceReducer";
+import {IngredientsContext, PriceContext} from "../../Services/DataContext";
 
 const TotalPrice = () => {
-    const dispatch = useDispatch()
-
-    const ingredients = useSelector(state => state.ingredients);
-    const price = useSelector(state => state.price);
+    const [ingredients] = useContext(IngredientsContext);
+    const [price, setPrice] = useContext(PriceContext)
 
     useEffect(
         () => {
-            let total = ingredients.ingredients_bun?.price*2;
-            ingredients.ingredients?.map(item => (total += item?.price));
-            dispatch(setPrice(total))
+            let total = 0;
+            ingredients.map(item => (total += item.type==='bun'?item.price*2:item.price));
+            setPrice(total)
         },
         [ingredients]
     );
     return (
         <div className='summ_price'>
-            <p className="text text_type_digits-medium">{price?.total_price}</p>
+            <p className="text text_type_digits-medium">{price}</p>
             <CurrencyIcon style={{width: '33px'}} type="primary" />
         </div>
     );

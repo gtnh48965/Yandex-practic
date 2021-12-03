@@ -1,15 +1,14 @@
-import React from 'react';
-import {useSelector} from "react-redux";
+import React, {useContext} from 'react';
+import {OrderContext} from "../../Services/DataContext";
 
 
 const OrderDetails = () => {
-    const order = useSelector(state => state.order)
-
     const order_info = {
         number: '034536',
         img: './images/done.png',
         status: 'Ваш заказ начали готовить',
     };
+    const [order] = useContext(OrderContext);
 
     return (
         <main className={'modal-self_main mt-3'}>
