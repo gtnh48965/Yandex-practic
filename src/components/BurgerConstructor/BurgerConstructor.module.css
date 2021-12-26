@@ -7,21 +7,14 @@
     margin-bottom: 16px;
     margin-top: 16px;
 }
-.constructor-element {
-    min-width: 536px;
-}
-.constructor-element__text {
-    min-height: 48px;
-}
-.ingredients_list {
+.ingredients-list {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 464px;
+    max-height: 464px;
     overflow: auto;
     padding-right: 8px;
 }
-
 ::-webkit-scrollbar {
     position: absolute;
     width: 8px;
@@ -38,13 +31,9 @@
 footer {
     display: flex;
     justify-content: space-between;
-    margin:0 16px;
+    margin:16px 0;
 }
-.summ_price {
-    display: flex;
-    align-items: center;
-    justify-self: center;
-}
+
 .button {
     width: 215px;
 }

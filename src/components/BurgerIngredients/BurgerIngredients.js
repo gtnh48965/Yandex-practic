@@ -1,69 +1,99 @@
-import "./BurgerIngredients.css"
 import React, {useEffect} from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "./Ingredients/Ingredient";
-import {menuItemPropTypes} from "../../utils/constants";
-import PropTypes from "prop-types";
+import {useSelector} from "react-redux";
+import styles from "./BurgerIngredients.module.css"
 
-const BurgerIngredients = ({data}) =>{
+
+const BurgerIngredients = () => {
+
+    const data = useSelector(state => state.data)
+
     const [current, setCurrent] = React.useState('bun');
 
-    useEffect(()=> {
-        const el = document.getElementById(current);
-        el.scrollIntoView({behavior: "smooth"});
-    },[current]);
-    const data_bun = data?.filter(item => {
-            return item.type === 'bun'
-    });
-    const data_sauce = data?.filter(item => {
-        return item.type === 'sauce'
-    });
-    const data_main = data?.filter(item => {
-        return item.type === 'main'
-    });
-
+    useEffect(() => {
+        const section = document.getElementById('burger-ingredients_section')
+        let bunH = document.getElementById('bun').offsetTop-section.offsetTop;
+        let sauceH = document.getElementById('sauce').offsetTop-section.offsetTop;
+        section?.addEventListener("scroll", ()=>{
+            if (current === 'bun') {
+                if (bunH+(sauceH-bunH)/2 < section.scrollTop ) {
+                    setCurrent('sauce')
+                }
+            }
+        })
+        return section.removeEventListener("scroll", ()=>{})
+    }, [])
+    useEffect(() => {
+        const section = document.getElementById('burger-ingredients_section')
+        let bunH = document.getElementById('bun').offsetTop-section.offsetTop;
+        let sauceH = document.getElementById('sauce').offsetTop-section.offsetTop;
+        let mainH = document.getElementById('main').offsetTop-section.offsetTop;
+        section?.addEventListener("scroll", ()=>{
+            if (current === 'sauce') {
+                if (bunH+(sauceH-bunH)/2 > section.scrollTop ) {
+                    setCurrent('bun')
+                }
+                if (sauceH+(mainH-sauceH)/2 < section.scrollTop ) {
+                    setCurrent('main')
+                }
+            }
+        })
+        return section.removeEventListener("scroll", ()=>{})
+    }, [current])
     return (
-        <section className='left-section'>
-            <article className='tab'>
-                <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
+        <section className={styles['left-section']}>
+            <article className={styles.tab}>
+                <Tab value="bun" active={current === 'bun'} onClick={
+                    () => {
+                        const el = document.getElementById('bun');
+                        el.scrollIntoView({behavior: "smooth"});
+                    }
+                }>
                     Булки
                 </Tab>
-                <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+                <Tab value="sauce" active={current === 'sauce'} onClick={
+                    () => {
+                        const el = document.getElementById('sauce');
+                        el.scrollIntoView({behavior: "smooth"});
+                    }
+                }>
                     Соусы
                 </Tab>
-                <Tab value="main" active={current === 'main'} onClick={setCurrent}>
+                <Tab value="main" active={current === 'main'} onClick={
+                    () => {
+                        const el = document.getElementById('main');
+                        el.scrollIntoView({behavior: "smooth"});
+                    }
+                }>
                     Начинки
                 </Tab>
             </article>
-            <article className='ingredients'>
+                <article className={styles.ingredients} id='burger-ingredients_section'>
                 <div id={'bun'}>
-                    <h3 className='title_ingredients'>Булки</h3>
-                    <div className='list_ingredients'>
-                        {data_bun?.map((item) =>
-                            <div key={item._id}>
-                                <Ingredient item={item} />
-                            </div>
+                    <h3 className={styles.title_ingredients}>Булки</h3>
+                    <div className={styles.list_ingredients}>
+                        {data.data_bun?.map((item) =>  (
+                            <Ingredient key={item._id} item={item}/>
+                            )
                         )}
                     </div>
                 </div>
                 <div id={'sauce'}>
-                    <h3 className='title_ingredients'>Соусы</h3>
+                    <h3 className={styles.title_ingredients}>Соусы</h3>
                     <div className='d-flex flex-wrap'>
-                        {data_sauce?.map((item) =>
-                            <div key={item._id}>
-                                <Ingredient item={item} />
-                            </div>
-
+                        {data.data_sauce?.map((item) =>(
+                            <Ingredient key={item._id} item={item}/>
+                            )
                         )}
                     </div>
                 </div>
                 <div id={'main'}>
-                    <h3 className='title_ingredients'>Начинки</h3>
+                    <h3 className={styles.title_ingredients}>Начинки</h3>
                     <div className='d-flex flex-wrap'>
-                        {data_main?.map((item) =>
-                            <div key={item._id}>
-                                <Ingredient item={item} />
-                            </div>
+                        {data.data_main?.map((item) =>(
+                            <Ingredient key={item._id}  item={item}/>
+                            )
                         )}
                     </div>
                 </div>
@@ -73,6 +103,3 @@ const BurgerIngredients = ({data}) =>{
 };
 export default BurgerIngredients;
 
-BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(menuItemPropTypes).isRequired,
-};

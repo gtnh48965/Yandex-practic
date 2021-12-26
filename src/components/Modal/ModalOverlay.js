@@ -1,6 +1,6 @@
 import React, {useEffect,useCallback} from 'react';
-import './ModalOverlay.css';
 import PropTypes from 'prop-types';
+import styles from "./ModalOverlay.module.css"
 
 const ModalOverlay = ({handleClickClose}) => {
     const listen = useCallback((event) => {
@@ -14,22 +14,22 @@ const ModalOverlay = ({handleClickClose}) => {
 
     useEffect(()=>{
         // Устанавливаем слушатель события при монтировании
-        document.addEventListener("keydown", (event)=> listen(event));
+        document.addEventListener("keydown", listen);
         // Сбрасываем слушатель события при удалении компонента из DOM
         return () => {
-            document.removeEventListener("keydown", (event)=> listen(event));
+            document.removeEventListener("keydown", listen);
         }
     }, [listen]);
     return (
-        <>
-            <div onClick={
-                (event) =>
-                    (event.target.classList.value === ('ModalOverlay'))?
-                        handleClickClose()
-                        :null
-                } className={'ModalOverlay'}>
-            </div>
-        </>
+        <div onClick={
+            (event) =>
+                (event.target.classList.contains('ModalOverlay'))?
+                    handleClickClose()
+                    :
+                    console.log(event.target.classList.value?.slice(0,12))
+            } className={'ModalOverlay ' + styles.ModalOverlay}>
+        </div>
+
     );
 };
 
