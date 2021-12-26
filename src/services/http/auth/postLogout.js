@@ -1,24 +1,24 @@
-import {setOrder} from "../actions/orderAction";
-import {checkResponse} from "./checkResponse";
-import {deleteAllIngredients} from "../actions/ingredientsAction";
-import {url} from "../../utils/constants";
-import {postToken} from "./auth/postToken";
+import {url} from "../../../utils/constants";
+import {checkResponse} from "../checkResponse";
+import {cleanUser} from "../../actions/userAction";
+import {postToken} from "./postToken";
 
-
-export const getOrder = (data) => {
+export const postLogout = () => {
 
     return dispatch => {
-        fetch(`${url}/orders`, {
+        fetch(`${url}/auth/logout`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': JSON.parse(localStorage.getItem(`token`))?.accessToken
             },
             method: 'POST',
-            body: JSON.stringify(data)
+            body: JSON.stringify({'token': `${JSON.parse(localStorage.getItem(`token`))?.refreshToken}`})
         }) .then(checkResponse)
             .then(response => {
-                dispatch(setOrder(response));
-                dispatch(deleteAllIngredients())
+                if (response.success) {
+                    dispatch(cleanUser())
+                }
             })
             .catch(errResponse => {
                     errResponse.json()

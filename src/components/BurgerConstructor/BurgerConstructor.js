@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderDetails from "../Order/OrderDetails";
 import ModalModule from "../Modal/Modal";
 import TotalPrice from "../TotalPrice/TotalPrice";
@@ -45,7 +45,7 @@ const BurgerConstructor = () => {
     return (
         <section ref={dropTarget} className={styles['right-section'] + ''}>
             <p className='text text_type_main-default'>Перенесите сюда булку и ингредиенты</p>
-            <div className='d-flex flex-column' style={{  gap: '16px' }}>
+            <div className='d-flex flex-column root_constructor-element' style={{  gap: '16px' }}>
                 {ingredients.ingredients_bun?
                     <div className='ml-10'>
                         <ConstructorElement

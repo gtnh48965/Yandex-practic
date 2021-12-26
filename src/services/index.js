@@ -4,6 +4,10 @@ import {orderReducer} from "./reducers/orderReducer";
 import {datasReducer} from "./reducers/datasReducer";
 import {priceReducer} from "./reducers/priceReducer";
 import {ingredientsReducer} from "./reducers/ingredientsReducer";
+import {resetPasswordReducer} from "./reducers/resetPasswordReducer";
+import {authorizationReduser} from "./reducers/authorizationReduser";
+import {userReducer} from "./reducers/userReducer";
+import {personalInfoRedux} from "./reducers/personalInfoRedux";
 
 
 const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -14,6 +18,10 @@ const rootReducer = combineReducers({
     data: datasReducer,
     price: priceReducer,
     ingredients: ingredientsReducer,
+    resetPassword: resetPasswordReducer,
+    authorization: authorizationReduser,
+    user: userReducer,
+    personalInfo: personalInfoRedux,
 
 })
 

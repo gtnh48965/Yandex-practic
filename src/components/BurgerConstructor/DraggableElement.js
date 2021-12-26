@@ -54,7 +54,7 @@ const DraggableElement = ({id, ingredient, index, moveElement}) => {
     });
     drag(drop(ref));
     return (
-        <div ref={ref} className={'d-flex align-items-center '+styles['root_constructor-element']} data-handler-id={handlerId}>
+        <div ref={ref} className={'d-flex align-items-center'} data-handler-id={handlerId}>
             <span className='m-2'>
                 <DragIcon type="primary" />
             </span>
