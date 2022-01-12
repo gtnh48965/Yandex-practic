@@ -5,13 +5,13 @@ import {Link} from "react-router-dom";
 import {useLocation} from "react-router-dom";
 
 const AppHeader = () => {
-    let location = useLocation();
+    const location = useLocation();
 
     return (
     <header className={styles.AppHeader}>
         <div className="container h-100">
             <div className="row h-100 align-items-center justify-content-between">
-                <div className='col d-flex align-items-center'>
+                <nav className='col d-flex align-items-center'>
                     <Link to='/' className='d-flex'>
                         {location.pathname==="/"?
                             <>
@@ -25,8 +25,8 @@ const AppHeader = () => {
                             </>
                         }
                     </Link>
-                    <Link to='/lenta' className='d-flex'>
-                        {location.pathname.includes("/lenta")?
+                    <Link to='/orders' className='d-flex'>
+                        {location.pathname.includes("/orders")?
                             <>
                                 <ListIcon type="primary" />
                                 <p className="text text_type_main-default ml-2">Лента заказа</p>
@@ -38,10 +38,10 @@ const AppHeader = () => {
                             </>
                         }
                     </Link>
-                </div>
-                <div className='w-auto'>
+                </nav>
+                <Link to={'/'} className='w-auto'>
                     <Logo />
-                </div>
+                </Link>
                 <Link to='/profile' className='col d-flex justify-content-end' >
                     {location.pathname.includes("/profile")?
                         <>
