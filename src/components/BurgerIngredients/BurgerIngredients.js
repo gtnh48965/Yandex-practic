@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "./Ingredients/Ingredient";
-import {useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import styles from "./BurgerIngredients.module.css"
 
 
@@ -24,6 +24,7 @@ const BurgerIngredients = () => {
         })
         return section.removeEventListener("scroll", ()=>{})
     }, [])
+
     useEffect(() => {
         const section = document.getElementById('burger-ingredients_section')
         let bunH = document.getElementById('bun').offsetTop-section.offsetTop;
@@ -41,6 +42,7 @@ const BurgerIngredients = () => {
         })
         return section.removeEventListener("scroll", ()=>{})
     }, [current])
+
     return (
         <section className={styles['left-section']}>
             <article className={styles.tab}>
